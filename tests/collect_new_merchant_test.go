@@ -37,8 +37,8 @@ func TestCollectNewMerchant(t *testing.T) {
 			panic(err)
 		}
 		if xq.Bid == "" {
-			fmt.Println("商户信息为空")
-			continue
+			fmt.Println(fmt.Sprintf("商户信息为空 bid = %d", i))
+			break
 		}
 
 		pre := "https://w7.dapp100.cn/attachment/"
