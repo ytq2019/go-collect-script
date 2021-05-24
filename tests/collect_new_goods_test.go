@@ -17,8 +17,8 @@ import (
 
 func TestCollectNewGoods(t *testing.T) {
 	db := utils.InitDb()
-
-	for cate := 39; cate <= 42; cate++ {
+	cates := []int{41, 39, 47, 40}
+	for _, cate := range cates {
 		log.Println(fmt.Sprintf("=======开始采集分类为%d数据=======", cate))
 		for page := 1; page <= 5; page++ {
 			log.Println(fmt.Sprintf("=======开始采集第%d页=======", page))
@@ -44,7 +44,7 @@ func TestCollectNewGoods(t *testing.T) {
 
 func saveOrUpdateGoods(db *gorm.DB, gn *dto.GetProductsNew) error {
 	for _, v := range gn.Date {
-		fmt.Println(fmt.Sprintf("商品名称 %s",v.Content))
+		fmt.Println(fmt.Sprintf("商品名称 %s", v.Content))
 		uid, _ := strconv.ParseInt(v.Bid, 10, 64)
 		item := &orm.ImsSupermanHand2Item{}
 		item.Uniacid = 2
