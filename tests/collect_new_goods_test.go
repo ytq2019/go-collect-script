@@ -18,9 +18,9 @@ import (
 func TestCollectNewGoods(t *testing.T) {
 	db := utils.InitDb()
 
-	for cate := 39; cate <= 42; cate++ {
+	for cate := 39; cate <= 47; cate++ {
 		log.Println(fmt.Sprintf("=======开始采集分类为%d数据=======", cate))
-		for page := 1; page <= 5; page++ {
+		for page := 1; page <= 3; page++ {
 			log.Println(fmt.Sprintf("=======开始采集第%d页=======", page))
 			url := fmt.Sprintf(`https://w7.dapp100.cn/app/index.php?i=27&t=0&v=4.3.5&from=wxapp&c=entry&a=wxapp&do=getProducts&m=mzhk_sun&sign=09815a452384fb11466d9db08f783ca0&lat=40.106178283691406&lon=116.3189697265625&openid=oB6Tt0JxXVGsRuORPRzmoalusX7U&keyword=&brand_cate=%d&type=1&page=%d&aid=&userid=95534`, cate, page)
 			bodyBytes, err := utils.HttpGet(url)
@@ -44,7 +44,7 @@ func TestCollectNewGoods(t *testing.T) {
 
 func saveOrUpdateGoods(db *gorm.DB, gn *dto.GetProductsNew) error {
 	for _, v := range gn.Date {
-		fmt.Println(fmt.Sprintf("商品名称 %s",v.Content))
+		fmt.Println(fmt.Sprintf("商品名称 %s", v.Content))
 		uid, _ := strconv.ParseInt(v.Bid, 10, 64)
 		item := &orm.ImsSupermanHand2Item{}
 		item.Uniacid = 2
