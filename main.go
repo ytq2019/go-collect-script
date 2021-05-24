@@ -63,10 +63,10 @@ func collectMerchant() error {
 		return err
 	}
 	//
-	start := lastMember.Uid + 1
-	end := start + 20
-	//start := 330
-	//end := 680
+	//start := lastMember.Uid + 1
+	//end := start + 20
+	start := 680
+	end := 10000
 	for i := start; i <= end; i++ {
 		fmt.Println(fmt.Sprintf("=========开始获取商户id=%d数据==========", i))
 		url := fmt.Sprintf(`https://w7.dapp100.cn/app/index.php?i=27&t=0&v=4.3.5&from=wxapp&c=entry&a=wxapp&do=shopXq&m=mzhk_sun&sign=&id=%d&openid=oB6Tt0JxXVGsRuORPRzmoalusX7U&type=1&userid=95534`, i)
