@@ -202,6 +202,7 @@ func saveOrUpdateGoods(db *gorm.DB, gn *dto.GetProductsNew) error {
 		item.SellerUid = uid
 		item.Title = v.Content
 		item.Type = 1
+		item.SellRegion = 0
 		item.Description = v.Content
 		item.Wechatpay = 1
 		item.Stock = 1
