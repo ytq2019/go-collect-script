@@ -193,6 +193,8 @@ func saveOrUpdateGoods(db *gorm.DB, gn *dto.GetProductsNew) error {
 				categoryId = 41
 			case "贸易商":
 				categoryId = 42
+			default:
+				categoryId = 41
 			}
 		} else {
 			categoryId = 41
