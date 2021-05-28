@@ -217,7 +217,6 @@ func saveOrUpdateGoods(db *gorm.DB, gn *dto.GetProductsNew) error {
 		item.Status = 1
 		item.IsShop = 1
 		item.CreditTip = 1
-		item.SellRegion = 1
 		parse, _ := time.Parse("2006-01-02 15:04:05", v.Selftime)
 		item.Createtime = parse.Unix()
 		item.Refreshtime = parse.Unix()
