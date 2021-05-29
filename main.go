@@ -121,6 +121,8 @@ func createUserAndMerchant(db *gorm.DB, xq *dto.SupplyInfo) error {
 	shop.Realname = xq.Bname
 	shop.Phone = xq.Phone
 	shop.Address = xq.Address
+	shop.Latitude = xq.Latitude
+	shop.Longitude = xq.Longitude
 	shop.Status = 1
 	shop.Createtime = time.Now().Unix()
 	if len(xq.Wechat) > 0 {
