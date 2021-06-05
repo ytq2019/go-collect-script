@@ -127,6 +127,15 @@ func createUserAndMerchant(db *gorm.DB, xq *dto.SupplyInfo) error {
 		shop.Wechat = xq.Wechat[0]
 	}
 
+	//微擎用户表
+	imsMcMembers := &orm.ImsMcMembers{
+		Uid:      uid,
+		Uniacid:  2,
+		Mobile:   xq.Phone,
+		Nickname: xq.Bname,
+		Avatar:   xq.Img,
+	}
+
 	tx := db.Begin()
 	if err := tx.Error; err != nil {
 		panic(err)
@@ -147,6 +156,18 @@ func createUserAndMerchant(db *gorm.DB, xq *dto.SupplyInfo) error {
 		if err := member.Updates(db); err != nil {
 			tx.Rollback()
 			return err
+		}
+	}
+
+	if err := imsMcMembers.LoadByUid(db); err != nil {
+		if err == gorm.ErrRecordNotFound {
+			if err := imsMcMembers.Create(db); err != nil {
+				s := err.Error()
+				if !strings.Contains(s, "Duplicate") {
+					tx.Rollback()
+					return nil
+				}
+			}
 		}
 	}
 
