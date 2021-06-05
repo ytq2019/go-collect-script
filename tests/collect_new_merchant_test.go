@@ -38,7 +38,7 @@ func TestCollectNewMerchant(t *testing.T) {
 		}
 		if xq.Bid == "" {
 			fmt.Println(fmt.Sprintf("商户信息为空 bid = %d", i))
-			break
+			continue
 		}
 
 		pre := "https://w7.dapp100.cn/attachment/"
@@ -122,6 +122,8 @@ func createUserAndMerchant(db *gorm.DB, xq *dto.SupplyInfo) error {
 		//更新微信
 		if len(xq.Wechat) > 0 {
 			shop.Wechat = xq.Wechat[0]
+			shop.Latitude = xq.Latitude
+			shop.Longitude = xq.Longitude
 		}
 		if err := shop.Updates(db); err != nil {
 			tx.Rollback()

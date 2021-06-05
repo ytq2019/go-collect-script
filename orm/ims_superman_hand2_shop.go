@@ -11,6 +11,8 @@ type ImsSupermanHand2Shop struct {
 	Phone      string `gorm:"column:phone" json:"phone" form:"phone"`
 	Wechat     string `gorm:"column:wechat" json:"wechat" form:"wechat"`
 	Address    string `gorm:"column:address" json:"address" form:"address"`
+	Latitude   string `gorm:"column:latitude" json:"latitude" form:"latitude"`
+	Longitude  string `gorm:"column:longitude" json:"longitude" form:"longitude"`
 	CertImgs   string `gorm:"column:cert_imgs" json:"cert_imgs" form:"cert_imgs"`
 	Status     int64  `gorm:"column:status" json:"status" form:"status"`
 	Createtime int64  `gorm:"column:createtime" json:"createtime" form:"createtime"`
