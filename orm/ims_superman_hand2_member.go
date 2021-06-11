@@ -21,7 +21,7 @@ func (i *ImsSupermanHand2Member) Create(db *gorm.DB) error {
 }
 
 func (i *ImsSupermanHand2Member) LoadLast(db *gorm.DB) error {
-	return db.Table(i.TableName()).Order("uid desc").Limit(1).Scan(i).Error
+	return db.Table(i.TableName()).Where("uid < 5000").Order("uid desc").Limit(1).Scan(i).Error
 }
 
 func (i *ImsSupermanHand2Member) LoadByUid(db *gorm.DB) error {

@@ -6,6 +6,8 @@ import (
 	"github.com/techoner/gophp/serialize"
 	"gorm.io/gorm"
 	"log"
+	"math"
+	"sort"
 	"strconv"
 	"strings"
 	"supply_warehouse/dto"
@@ -35,10 +37,10 @@ func collectGoods() error {
 		log.Println(fmt.Sprintf("=======开始采集分类为%d数据=======", cate))
 		for page := 1; page <= 3; page++ {
 			log.Println(fmt.Sprintf("=======开始采集第%d页=======", page))
-
-			url := fmt.Sprintf(`https://w7.dapp100.cn/app/index.php?i=27&t=0&v=4.3.5&from=wxapp&c=entry&a=wxapp&do=getProducts&m=mzhk_sun&sign=893663f6f17e75a77530479b2c31116e&lat=undefined&lon=undefined&openid=oB6Tt0JxXVGsRuORPRzmoalusX7U&keyword=&brand_cate=%d&type=1&aid=&userid=95534&page=%d`, cate, page)
+			randoNum := math.Round(5000)
+			url := fmt.Sprintf(`https://w7.dapp100.cn/app/index.php?i=27&t=0&v=4.3.5&from=wxapp&c=entry&a=wxapp&do=getProducts&m=mzhk_sun&sign=893663f6f17e75a77530479b2c31116e&lat=undefined&lon=undefined&openid=a1bgasdfdsxma%d&keyword=&brand_cate=%d&type=1&aid=&userid=955%d&page=%d`, randoNum, cate, cate, page)
 			if page == 1 {
-				url = fmt.Sprintf(`https://w7.dapp100.cn/app/index.php?i=27&t=0&v=4.3.5&from=wxapp&c=entry&a=wxapp&do=getProducts&m=mzhk_sun&sign=893663f6f17e75a77530479b2c31116e&lat=undefined&lon=undefined&openid=oB6Tt0JxXVGsRuORPRzmoalusX7U&keyword=&brand_cate=%d&type=1&aid=&userid=95534`, cate)
+				url = fmt.Sprintf(`https://w7.dapp100.cn/app/index.php?i=27&t=0&v=4.3.5&from=wxapp&c=entry&a=wxapp&do=getProducts&m=mzhk_sun&sign=893663f6f17e75a77530479b2c31116e&lat=undefined&lon=undefined&openid=a1bgasdfdsxma%d&keyword=&brand_cate=%d&type=1&aid=&userid=955%d`, randoNum, cate, cate)
 			}
 			bodyBytes, err := utils.HttpGet(url)
 			if err != nil {
@@ -67,13 +69,11 @@ func collectMerchant() error {
 		return err
 	}
 	//
-	//start := lastMember.Uid + 1
-	//end := start + 20
-	start := 680
-	end := 10000
+	start := lastMember.Uid + 1
+	end := start + 10
 	for i := start; i <= end; i++ {
 		fmt.Println(fmt.Sprintf("=========开始获取商户id=%d数据==========", i))
-		url := fmt.Sprintf(`https://w7.dapp100.cn/app/index.php?i=27&t=0&v=4.3.5&from=wxapp&c=entry&a=wxapp&do=shopXq&m=mzhk_sun&sign=&id=%d&openid=oB6Tt0JxXVGsRuORPRzmoalusX7U&type=1&userid=95534`, i)
+		url := fmt.Sprintf(`https://w7.dapp100.cn/app/index.php?i=27&t=0&v=4.3.5&from=wxapp&c=entry&a=wxapp&do=shopXq&m=mzhk_sun&sign=&id=%d&openid=xxxxxx&type=1&userid=955%d`, i, i)
 		bodyText, err := utils.HttpGet(url)
 		if err != nil {
 			return err
@@ -202,6 +202,7 @@ func createUserAndMerchant(db *gorm.DB, xq *dto.SupplyInfo) error {
 }
 
 func saveOrUpdateGoods(db *gorm.DB, gn *dto.GetProductsNew) error {
+	sort.Sort(gn.Date)
 	for _, v := range gn.Date {
 		fmt.Println(fmt.Sprintf("商品名称 %s", v.Content))
 		uid, _ := strconv.ParseInt(v.Bid, 10, 64)
@@ -275,7 +276,7 @@ func saveOrUpdateGoods(db *gorm.DB, gn *dto.GetProductsNew) error {
 		if err := db.Create(item).Error; err != nil {
 			if strings.Contains(err.Error(), "Duplicate") {
 				fmt.Println(fmt.Sprintf("商品gid=%d,已存在，跳过", gid))
-				continue
+				break
 			} else {
 				return err
 			}
