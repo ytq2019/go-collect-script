@@ -16,14 +16,15 @@ import (
 )
 
 var db = utils.InitDb()
+var openid = "oB6Tt0I3aUXUh2hVgtZtfINar9j8"
 
 func main() {
 	if err := collectMerchant(); err != nil {
 		panic(err)
 	}
-	if err := collectGoods(); err != nil {
-		panic(err)
-	}
+	//if err := collectGoods(); err != nil {
+	//	panic(err)
+	//}
 
 }
 
@@ -36,9 +37,9 @@ func collectGoods() error {
 		for page := 1; page <= 3; page++ {
 			time.Sleep(time.Second * 3)
 			log.Println(fmt.Sprintf("=======开始采集第%d页=======", page))
-			url := fmt.Sprintf(`https://w7.dapp100.cn/app/index.php?i=27&t=0&v=4.3.5&from=wxapp&c=entry&a=wxapp&do=getProducts&m=mzhk_sun&sign=893663f6f17e75a77530479b2c31116e&lat=undefined&lon=undefined&openid=oB6Tt0NEDwKQYqTj2VDlR_eC5KQg&keyword=&brand_cate=%d&type=1&aid=&userid=955%d&page=%d`, cate, cate, page)
+			url := fmt.Sprintf(`https://w7.dapp100.cn/app/index.php?i=27&t=0&v=4.3.5&from=wxapp&c=entry&a=wxapp&do=getProducts&m=mzhk_sun&sign=893663f6f17e75a77530479b2c31116e&lat=undefined&lon=undefined&openid=%s&keyword=&brand_cate=%d&type=1&aid=&userid=1083%d&page=%d`, openid, cate, cate, page)
 			if page == 1 {
-				url = fmt.Sprintf(`https://w7.dapp100.cn/app/index.php?i=27&t=0&v=4.3.5&from=wxapp&c=entry&a=wxapp&do=getProducts&m=mzhk_sun&sign=893663f6f17e75a77530479b2c31116e&lat=undefined&lon=undefined&openid=oB6Tt0NEDwKQYqTj2VDlR_eC5KQg&keyword=&brand_cate=%d&type=1&aid=&userid=955%d`, cate, cate)
+				url = fmt.Sprintf(`https://w7.dapp100.cn/app/index.php?i=27&t=0&v=4.3.5&from=wxapp&c=entry&a=wxapp&do=getProducts&m=mzhk_sun&sign=893663f6f17e75a77530479b2c31116e&lat=undefined&lon=undefined&openid=%s&keyword=&brand_cate=%d&type=1&aid=&userid=1083%d`, openid, cate, cate)
 			}
 			bodyBytes, err := utils.HttpGet(url)
 			if err != nil {
@@ -74,7 +75,7 @@ func collectMerchant() error {
 	for i := start; i <= end; i++ {
 		time.Sleep(time.Second * 3)
 		fmt.Println(fmt.Sprintf("=========开始获取商户id=%d数据==========", i))
-		url := fmt.Sprintf(`https://w7.dapp100.cn/app/index.php?i=27&t=0&v=4.3.5&from=wxapp&c=entry&a=wxapp&do=shopXq&m=mzhk_sun&sign=&id=%d&openid=oB6Tt0NEDwKQYqTj2VDlR_eC5KQg&type=1&userid=955%d`, i, i)
+		url := fmt.Sprintf(`https://w7.dapp100.cn/app/index.php?i=27&t=0&v=4.3.5&from=wxapp&c=entry&a=wxapp&do=shopXq&m=mzhk_sun&sign=&id=%d&openid=%s&type=1&userid=1`, i, openid)
 		bodyText, err := utils.HttpGet(url)
 		if err != nil {
 			return err
@@ -85,7 +86,7 @@ func collectMerchant() error {
 		}
 		if xq.Bid == "" {
 			fmt.Println(fmt.Sprintf("商户信息为空 bid = %d", i))
-			break
+			continue
 		}
 
 		pre := "https://w7.dapp100.cn/attachment/"
@@ -98,7 +99,7 @@ func collectMerchant() error {
 		uid, _ := strconv.ParseInt(xq.Bid, 10, 64)
 		if uid == 0 {
 			fmt.Println("商户数据为空")
-			break
+			continue
 		}
 		fmt.Println("开始创建商户")
 		//创建会员与商户
