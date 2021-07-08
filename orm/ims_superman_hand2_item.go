@@ -82,7 +82,7 @@ func (i *ImsSupermanHand2Item) Create(db *gorm.DB) error {
 func (i *ImsSupermanHand2Item) SelectList(db *gorm.DB) ([]ImsSupermanHand2Item, error) {
 	var items []ImsSupermanHand2Item
 	//处理到了 236463
-	if err := db.Model(i).Where("id <= 301807").Order("id desc").Limit(1000).Scan(&items).Error; err != nil {
+	if err := db.Model(i).Where("id <= 236463").Order("id desc").Limit(10000).Scan(&items).Error; err != nil {
 		return nil, err
 	}
 	return items, nil

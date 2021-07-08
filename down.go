@@ -6,7 +6,7 @@ import (
 	"supply_warehouse/orm"
 )
 
-func main() {
+func main1() {
 	item := orm.ImsSupermanHand2Item{}
 	list, err := item.SelectList(db)
 	if err != nil {

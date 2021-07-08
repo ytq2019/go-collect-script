@@ -18,15 +18,15 @@ import (
 var db = utils.InitDb()
 var openid = "oB6Tt0I3aUXUh2hVgtZtfINar9j8"
 
-//func main() {
-//	//if err := collectMerchant(); err != nil {
-//	//	panic(err)
-//	//}
-//	if err := collectGoods(); err != nil {
-//		panic(err)
-//	}
-//
-//}
+func main() {
+	//if err := collectMerchant(); err != nil {
+	//	panic(err)
+	//}
+	if err := collectGoods(); err != nil {
+		panic(err)
+	}
+
+}
 
 //采集商品信息
 func collectGoods() error {
@@ -258,8 +258,8 @@ func saveOrUpdateGoods(db *gorm.DB, gn *dto.GetProductsNew) error {
 			for _, v := range v.Pics {
 				//图片
 				if v.Type == "1" {
-					pics = append(pics, v.URL)
 					download(v.URL)
+					pics = append(pics, strings.ReplaceAll(v.URL, "https://w7.dapp100.cn/attachment/", ""))
 				} else {
 					videos = append(videos, v.URL)
 				}
