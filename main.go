@@ -73,7 +73,6 @@ func collectMerchant() error {
 	//start := 700
 	//end := 750
 	for i := start; i <= end; i++ {
-		time.Sleep(time.Second * 3)
 		fmt.Println(fmt.Sprintf("=========开始获取商户id=%d数据==========", i))
 		url := fmt.Sprintf(`https://w7.dapp100.cn/app/index.php?i=27&t=0&v=4.3.5&from=wxapp&c=entry&a=wxapp&do=shopXq&m=mzhk_sun&sign=&id=%d&openid=%s&type=1&userid=1`, i, openid)
 		bodyText, err := utils.HttpGet(url)
