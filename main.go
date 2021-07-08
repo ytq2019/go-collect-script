@@ -19,9 +19,9 @@ var db = utils.InitDb()
 var openid = "oB6Tt0I3aUXUh2hVgtZtfINar9j8"
 
 func main() {
-	//if err := collectMerchant(); err != nil {
-	//	panic(err)
-	//}
+	if err := collectMerchant(); err != nil {
+		panic(err)
+	}
 	if err := collectGoods(); err != nil {
 		panic(err)
 	}
